@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --ink: #060504;
+    --ink-2: #0c0a08;
+    --cream: #e9dfd3;
+    --cream-dim: #a89c8d;
+    --gold: #d9a441;
+    --gold-bright: #f0c169;
+    --ember: #8b2a1e;
+    --journey: 0; /* 0 = тьма, 1 = свет. Управляется скроллом */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--ink);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(217, 164, 65, 0.85);
+    color: #0c0a08;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #060504;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a241d;
+    border-radius: 8px;
+    border: 2px solid #060504;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #57452a;
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Cormorant', 'Cormorant Garamond', Georgia, serif;
+  }
+  .font-poem {
+    font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  }
+  .font-ui {
+    font-family: 'Manrope', system-ui, sans-serif;
+  }
+
+  /* Построчное появление */
+  .line-hidden {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(6px);
+  }
+  .line-shown {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+  .line-anim {
+    transition:
+      opacity 1.4s cubic-bezier(0.2, 0.6, 0, 1),
+      transform 1.4s cubic-bezier(0.2, 0.6, 0, 1),
+      filter 1.4s cubic-bezier(0.2, 0.6, 0, 1);
+  }
+
+  /* Медленное появление блоков */
+  .fade-hidden {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  .fade-shown {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .fade-anim {
+    transition:
+      opacity 1.8s cubic-bezier(0.2, 0.6, 0, 1),
+      transform 1.8s cubic-bezier(0.2, 0.6, 0, 1);
+  }
+
+  /* Мазок кисти */
+  .brush-path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .brush-drawn {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
+  }
+
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .line-anim,
+  .fade-anim,
+  .brush-drawn {
+    transition-duration: 0.01s !important;
+  }
+}
