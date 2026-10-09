@@ -46,12 +46,14 @@ export default function Stanza({ chapter, index }: { chapter: Chapter; index: nu
       id={`chapter-${index}`}
       className="relative z-10 flex min-h-[100svh] items-center justify-center px-6 py-28 sm:px-10"
     >
+      {/* Локальное свечение главы */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-1/2 h-[90vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{ background: style.glow, opacity: shown ? 1 : 0, transition: 'opacity 2s cubic-bezier(0.2,0.6,0,1)' }}
       />
 
+      {/* Призрачная цифра главы */}
       <span
         aria-hidden="true"
         className={`font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[52vmin] font-light leading-none ${style.numeral}`}

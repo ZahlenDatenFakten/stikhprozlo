@@ -1,46 +1,81 @@
 import AmbientCanvas from '@/components/AmbientCanvas';
 import AmbientGlow from '@/components/AmbientGlow';
-import Hero from '@/components/Hero';
-import Stanza from '@/components/Stanza';
-import BrushDivider from '@/components/BrushDivider';
-import SideNav from '@/components/SideNav';
-import Finale from '@/components/Finale';
+import FloatingNavbar from '@/components/FloatingNavbar';
+import TamerlanHero from '@/components/TamerlanHero';
+import PoemCardsShowcase from '@/components/PoemCardsShowcase';
+import PoemArtist from '@/components/PoemArtist';
+import PoemThreads from '@/components/PoemThreads';
+import PoetryFooter from '@/components/PoetryFooter';
+import SideNav, { defaultWaypoints } from '@/components/SideNav';
 import { useJourney } from '@/hooks/useReveal';
-import { chapters } from '@/data/poem';
 
 export default function App() {
-  const chapterIds = chapters.map((_, i) => `chapter-${i}`);
-  const { journey, active } = useJourney(chapterIds);
+  const waypointIds = defaultWaypoints.map((w) => w.id);
+  const { journey, active } = useJourney(waypointIds);
 
-  const scrollTo = (index: number) => {
-    document.getElementById(`chapter-${index}`)?.scrollIntoView({ behavior: 'smooth' });
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
+  const handleSelectPoem = (poemId: string) => {
+    if (poemId === 'artist') {
+      scrollTo('poem-artist');
+    } else if (poemId === 'threads') {
+      scrollTo('poem-threads');
+    }
+  };
+
+  const activeWaypointId = waypointIds[active] || 'hero-tamerlan';
+
   return (
-    <main className="grain relative min-h-screen bg-[#060504]">
+    <main className="grain relative min-h-screen bg-[#060504] text-[#f5efe6] selection:bg-[#d9a441]/80 selection:text-[#060504]">
+      {/* Атмосферные световые слои и пылинки */}
       <AmbientGlow />
       <AmbientCanvas />
 
-      {/* Прогресс чтения */}
-      <div className="fixed left-0 top-0 z-30 h-[2px] w-full bg-transparent">
-        <div
-          className="h-full origin-left bg-gradient-to-r from-[#8b2a1e] via-[#d9a441] to-[#f0c169]"
-          style={{ transform: `scaleX(${journey})` }}
-        />
+      {/* Парящая верхняя навигация */}
+      <FloatingNavbar journey={journey} onNavigate={scrollTo} />
+
+      {/* Боковой навигатор по разделам */}
+      <SideNav activeId={activeWaypointId} onSelect={scrollTo} />
+
+      {/* 1. Начальный экран: Заставка про «Стихи Тамерлана» */}
+      <TamerlanHero
+        onScrollToCatalog={() => scrollTo('poems-showcase')}
+        onScrollToFirstPoem={() => scrollTo('poem-artist')}
+      />
+
+      {/* 2. Плавный спуск к наикрасивейшим табличкам на все стихи */}
+      <PoemCardsShowcase onSelectPoem={handleSelectPoem} />
+
+      {/* Разделитель между витриной и чтением */}
+      <div className="relative z-10 mx-auto my-12 flex max-w-xs items-center justify-center gap-4">
+        <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#d9a441]/40 to-transparent" />
+        <span className="font-display text-sm italic text-[#d9a441]/80">Произведения</span>
+        <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[#d9a441]/40 to-transparent" />
       </div>
 
-      <SideNav numerals={chapters.map((c) => c.numeral)} active={active} onSelect={scrollTo} />
+      {/* 3. Первый стих: Поэма «Художник» (6 глав + мазки + финал) */}
+      <PoemArtist />
 
-      <Hero />
+      {/* Декоративный переход между произведениями */}
+      <div className="relative z-10 mx-auto my-20 flex max-w-md items-center justify-center gap-6 px-6">
+        <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#e09553]/50 to-transparent" />
+        <span className="h-2 w-2 rotate-45 border border-[#e09553] bg-[#e09553]/30" />
+        <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[#e09553]/50 to-transparent" />
+      </div>
 
-      {chapters.map((chapter, i) => (
-        <div key={chapter.numeral}>
-          <Stanza chapter={chapter} index={i} />
-          {i < chapters.length - 1 && <BrushDivider variant={i} />}
-        </div>
-      ))}
+      {/* 4. Второй стих: «Нити на ветру» (4 строфы + точнейший смысл стиха) */}
+      <PoemThreads />
 
-      <Finale />
+      {/* 5. Подвал поэтического пространства */}
+      <PoetryFooter
+        onScrollToTop={() => scrollTo('hero-tamerlan')}
+        onNavigate={scrollTo}
+      />
     </main>
   );
 }
