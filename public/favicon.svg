@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none">
+  <defs>
+    <!-- Градиент фона -->
+    <radialGradient id="bg-grad" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stopColor="#1a140d" />
+      <stop offset="70%" stopColor="#0a0806" />
+      <stop offset="100%" stopColor="#040302" />
+    </radialGradient>
+
+    <!-- Золотой градиент пера -->
+    <linearGradient id="gold-feather" x1="10" y1="10" x2="54" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stopColor="#fff3d1" />
+      <stop offset="30%" stopColor="#f3c775" />
+      <stop offset="70%" stopColor="#d9a441" />
+      <stop offset="100%" stopColor="#9e6e22" />
+    </linearGradient>
+
+    <!-- Свечение искры -->
+    <radialGradient id="spark-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stopColor="#ffffff" />
+      <stop offset="40%" stopColor="#f3c775" />
+      <stop offset="100%" stopColor="#d9a441" stopOpacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Фон: глубокий темный скругленный квадрат -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bg-grad)" stroke="#d9a441" stroke-width="1.5" stroke-opacity="0.4" />
+
+  <!-- Тонкий внутренний золотой кант -->
+  <rect x="5" y="5" width="54" height="54" rx="13" stroke="#f0c169" stroke-width="0.75" stroke-opacity="0.2" />
+
+  <!-- Каллиграфическое перо (Feather) -->
+  <path
+    d="M45.5 13.5 C42.2 13.5 35.8 16.2 30.5 21.5 C25.2 26.8 21.5 33.2 20.2 37.5 L24.5 38.5 L21.5 42.5 L26.2 43.5 L23.5 47.5 L27.2 47.5 C28.5 46.2 34.8 42.5 40.2 37.2 C45.5 31.8 48.2 25.5 48.2 22.2 C48.2 17.5 46.5 14.2 45.5 13.5 Z"
+    fill="url(#gold-feather)"
+  />
+
+  <!-- Центральный стержень пера -->
+  <path
+    d="M44 15 L21 44 L16 50 L22 45 L44 15"
+    stroke="#ffffff"
+    stroke-width="1.2"
+    stroke-linecap="round"
+    stroke-opacity="0.85"
+  />
+
+  <!-- Острие пера / кончик с каплей чернил -->
+  <path
+    d="M16 50 L14.5 52 C14 52.8 14.8 53.5 15.5 53 L17.5 51.5 Z"
+    fill="#f3c775"
+  />
+
+  <!-- Сияющая искра поэзии (свет в ночи) -->
+  <circle cx="45" cy="15" r="3" fill="url(#spark-glow)" />
+  <path
+    d="M45 10 L45 20 M40 15 L50 15"
+    stroke="#ffffff"
+    stroke-width="0.8"
+    stroke-linecap="round"
+    stroke-opacity="0.9"
+  />
+</svg>
