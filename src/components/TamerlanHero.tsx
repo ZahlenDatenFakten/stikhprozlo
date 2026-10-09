@@ -112,7 +112,7 @@ export default function TamerlanHero({ onScrollToCatalog, onScrollToFirstPoem }:
         чиста и горяча.»
       </p>
 
-      {/* Информационные плашки / Особенности сборника */}
+      {/* Информационные плашки / Особенности альбома */}
       <div
         className={`fade-anim mt-10 flex flex-wrap items-center justify-center gap-3 sm:gap-6 ${
           mounted ? 'fade-shown' : 'fade-hidden'
@@ -121,15 +121,15 @@ export default function TamerlanHero({ onScrollToCatalog, onScrollToFirstPoem }:
       >
         <div className="flex items-center gap-2 rounded-lg border border-[#2a241d] bg-[#0f0d0b]/70 px-3.5 py-1.5 backdrop-blur-sm">
           <BookOpen className="h-3.5 w-3.5 text-[#d9a441]" />
-          <span className="font-ui text-xs text-[#a89c8d]">2 ключевых произведения</span>
+          <span className="font-ui text-xs text-[#a89c8d]">Альбом: «Холст и Нити» (2 части)</span>
         </div>
         <div className="flex items-center gap-2 rounded-lg border border-[#2a241d] bg-[#0f0d0b]/70 px-3.5 py-1.5 backdrop-blur-sm">
           <Sparkles className="h-3.5 w-3.5 text-[#f0c169]" />
-          <span className="font-ui text-xs text-[#a89c8d]">Живые скролл-анимации</span>
+          <span className="font-ui text-xs text-[#a89c8d]">Живой рукописный мост</span>
         </div>
         <div className="flex items-center gap-2 rounded-lg border border-[#2a241d] bg-[#0f0d0b]/70 px-3.5 py-1.5 backdrop-blur-sm">
           <Feather className="h-3.5 w-3.5 text-[#e09553]" />
-          <span className="font-ui text-xs text-[#a89c8d]">Авторское осмысление</span>
+          <span className="font-ui text-xs text-[#a89c8d]">Искренний диалог с душой</span>
         </div>
       </div>
 
@@ -144,7 +144,7 @@ export default function TamerlanHero({ onScrollToCatalog, onScrollToFirstPoem }:
           onClick={onScrollToCatalog}
           className="group relative flex items-center gap-3 overflow-hidden rounded-full border border-[#d9a441] bg-gradient-to-r from-[#d9a441]/20 to-[#f0c169]/15 px-8 py-3.5 text-sm font-medium text-[#f5efe6] backdrop-blur-md transition-all duration-300 hover:border-[#f0c169] hover:bg-[#d9a441]/30 hover:shadow-[0_0_30px_rgba(217,164,65,0.35)] cursor-pointer active:scale-95"
         >
-          <span className="font-ui text-xs tracking-[0.25em] uppercase">Смотреть стихи</span>
+          <span className="font-ui text-xs tracking-[0.25em] uppercase">Открыть альбом</span>
           <ArrowDown className="h-4 w-4 text-[#d9a441] transition-transform duration-300 group-hover:translate-y-1" />
         </button>
 
@@ -153,7 +153,7 @@ export default function TamerlanHero({ onScrollToCatalog, onScrollToFirstPoem }:
           className="group flex items-center gap-2.5 rounded-full border border-white/10 bg-white/5 px-7 py-3.5 text-sm font-medium text-[#a89c8d] backdrop-blur-md transition-all duration-300 hover:border-white/20 hover:bg-white/10 hover:text-[#f5efe6] cursor-pointer active:scale-95"
         >
           <BookOpen className="h-4 w-4 text-[#a89c8d] group-hover:text-[#f5efe6] transition-colors" />
-          <span className="font-ui text-xs tracking-[0.2em] uppercase">Начать чтение</span>
+          <span className="font-ui text-xs tracking-[0.2em] uppercase">Войти в чтение</span>
         </button>
       </div>
 

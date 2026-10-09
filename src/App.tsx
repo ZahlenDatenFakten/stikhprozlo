@@ -4,6 +4,7 @@ import FloatingNavbar from '@/components/FloatingNavbar';
 import TamerlanHero from '@/components/TamerlanHero';
 import PoemCardsShowcase from '@/components/PoemCardsShowcase';
 import PoemArtist from '@/components/PoemArtist';
+import QuillBridge from '@/components/QuillBridge';
 import PoemThreads from '@/components/PoemThreads';
 import PoetryFooter from '@/components/PoetryFooter';
 import SideNav, { defaultWaypoints } from '@/components/SideNav';
@@ -48,30 +49,26 @@ export default function App() {
         onScrollToFirstPoem={() => scrollTo('poem-artist')}
       />
 
-      {/* 2. Плавный спуск к наикрасивейшим табличкам на все стихи */}
+      {/* 2. Плавный спуск к альбому: «Холст и Нити» (таблички произведений) */}
       <PoemCardsShowcase onSelectPoem={handleSelectPoem} />
 
-      {/* Разделитель между витриной и чтением */}
+      {/* Декоративный разделитель перехода к первому произведению */}
       <div className="relative z-10 mx-auto my-12 flex max-w-xs items-center justify-center gap-4">
         <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#d9a441]/40 to-transparent" />
-        <span className="font-display text-sm italic text-[#d9a441]/80">Произведения</span>
+        <span className="font-display text-sm italic text-[#d9a441]/80">Часть I</span>
         <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[#d9a441]/40 to-transparent" />
       </div>
 
-      {/* 3. Первый стих: Поэма «Художник» (6 глав + мазки + финал) */}
+      {/* 3. Первый стих альбома: Поэма «Художник» (6 глав + мазки + финал) */}
       <PoemArtist />
 
-      {/* Декоративный переход между произведениями */}
-      <div className="relative z-10 mx-auto my-20 flex max-w-md items-center justify-center gap-6 px-6">
-        <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#e09553]/50 to-transparent" />
-        <span className="h-2 w-2 rotate-45 border border-[#e09553] bg-[#e09553]/30" />
-        <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[#e09553]/50 to-transparent" />
-      </div>
+      {/* 4. Связующая нить альбома: Живое перо пишет мост между стихами, говоря с читателем */}
+      <QuillBridge onContinue={() => scrollTo('poem-threads')} />
 
-      {/* 4. Второй стих: «Нити на ветру» (4 строфы + точнейший смысл стиха) */}
+      {/* 5. Второй стих альбома: «Нити на ветру» (4 строфы + точнейший авторский смысл) */}
       <PoemThreads />
 
-      {/* 5. Подвал поэтического пространства */}
+      {/* 6. Подвал поэтического альбома */}
       <PoetryFooter
         onScrollToTop={() => scrollTo('hero-tamerlan')}
         onNavigate={scrollTo}

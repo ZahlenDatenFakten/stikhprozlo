@@ -241,3 +241,44 @@ export const allPoems: PoemItem[] = [
     meaning: threadsMeaning,
   },
 ];
+
+export interface PoemAlbum {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  theme: string;
+  parts: {
+    poemId: string;
+    partNumeral: string;
+    partTitle: string;
+    subtitle: string;
+    motif: string;
+  }[];
+}
+
+/** Единый поэтический альбом, объединяющий оба произведения в диптих */
+export const currentAlbum: PoemAlbum = {
+  id: 'canvas-and-threads',
+  title: 'Холст и Нити',
+  subtitle: 'Поэтический диптих в двух частях',
+  description:
+    'История преображения человеческой души: от рождения внутреннего света у холста художника — до тихого противостояния осенней стуже и обретения негасимой искры.',
+  theme: 'Свет души • Осень • Внутренняя опора • Искра зари',
+  parts: [
+    {
+      poemId: 'artist',
+      partNumeral: 'Часть I',
+      partTitle: 'Художник',
+      subtitle: 'Поэма в VI главах',
+      motif: 'Душа как чистый холст, смывание тьмы и рождение внутреннего творца',
+    },
+    {
+      poemId: 'threads',
+      partNumeral: 'Часть II',
+      partTitle: 'Нити на ветру',
+      subtitle: 'Философская лирика с авторским смыслом',
+      motif: 'Время, пустой коридор, хузн и негасимая искра в глубине ночи',
+    },
+  ],
+};

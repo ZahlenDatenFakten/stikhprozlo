@@ -20,6 +20,7 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
         'hero-tamerlan',
         'poems-showcase',
         'poem-artist',
+        'album-bridge',
         'poem-threads',
         'poem-threads-meaning',
       ];
@@ -89,7 +90,7 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
                   : 'text-[#a89c8d] hover:text-[#f5efe6] hover:bg-white/5'
               }`}
             >
-              Таблички стихов
+              Альбом
             </button>
 
             <button
@@ -100,7 +101,18 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
                   : 'text-[#a89c8d] hover:text-[#f5efe6] hover:bg-white/5'
               }`}
             >
-              «Художник»
+              Часть I
+            </button>
+
+            <button
+              onClick={() => onNavigate('album-bridge')}
+              className={`rounded-full px-3 py-1.5 font-ui text-[11px] tracking-wider uppercase transition-all duration-300 cursor-pointer hidden sm:inline-flex ${
+                activeSection === 'album-bridge'
+                  ? 'bg-[#f0c169]/25 text-[#f5efe6] border border-[#f0c169]/40 shadow-[0_0_12px_rgba(240,193,105,0.2)]'
+                  : 'text-[#a89c8d] hover:text-[#f5efe6] hover:bg-white/5'
+              }`}
+            >
+              Связующая нить
             </button>
 
             <button
@@ -111,7 +123,7 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
                   : 'text-[#a89c8d] hover:text-[#f5efe6] hover:bg-white/5'
               }`}
             >
-              «Нити на ветру»
+              Часть II
             </button>
 
             <button
@@ -122,7 +134,7 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
                   : 'text-[#e09553]/80 hover:text-[#f5efe6] hover:bg-[#e09553]/10'
               }`}
             >
-              Смысл стиха
+              Смысл
             </button>
           </div>
 

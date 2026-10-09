@@ -11,9 +11,10 @@ interface Props {
 
 export const defaultWaypoints: NavItem[] = [
   { id: 'hero-tamerlan', label: 'Заставка', shortLabel: '✧' },
-  { id: 'poems-showcase', label: 'Таблички стихов', shortLabel: '❖' },
-  { id: 'poem-artist', label: 'Поэма «Художник»', shortLabel: 'I' },
-  { id: 'poem-threads', label: 'Стих «Нити на ветру»', shortLabel: 'II' },
+  { id: 'poems-showcase', label: 'Альбом: Холст и Нити', shortLabel: '❖' },
+  { id: 'poem-artist', label: 'Часть I: «Художник»', shortLabel: 'I' },
+  { id: 'album-bridge', label: 'Связующая нить', shortLabel: '〰' },
+  { id: 'poem-threads', label: 'Часть II: «Нити на ветру»', shortLabel: 'II' },
   { id: 'poem-threads-meaning', label: 'Смысл стиха', shortLabel: '✎' },
 ];
 

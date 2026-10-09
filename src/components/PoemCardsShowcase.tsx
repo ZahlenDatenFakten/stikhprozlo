@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { allPoems, type PoemItem } from '@/data/poem';
+import { allPoems, currentAlbum, type PoemItem } from '@/data/poem';
 import { useReveal } from '@/hooks/useReveal';
 import { ArrowRight, Sparkles, Feather, Clock, Quote, Compass } from 'lucide-react';
 
@@ -24,14 +24,14 @@ export default function PoemCardsShowcase({ onSelectPoem }: Props) {
       {/* Фоновое мягкое свечение секции витрины */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[800px] w-full -translate-x-1/2 -translate-y-1/2 rounded-full opacity-40 blur-[130px]"
+        className="pointer-events-none absolute left-1/2 top-1/3 h-[850px] w-full -translate-x-1/2 -translate-y-1/2 rounded-full opacity-35 blur-[140px]"
         style={{
           background:
-            'radial-gradient(ellipse, rgba(217,164,65,0.15) 0%, rgba(139,42,30,0.08) 50%, transparent 75%)',
+            'radial-gradient(ellipse, rgba(217,164,65,0.18) 0%, rgba(138,51,36,0.12) 45%, transparent 75%)',
         }}
       />
 
-      {/* Верхний заголовок секции витрины */}
+      {/* Верхний заголовок секции альбома */}
       <div className="relative text-center">
         <div
           className={`fade-anim flex items-center justify-center gap-3 ${
@@ -40,28 +40,44 @@ export default function PoemCardsShowcase({ onSelectPoem }: Props) {
           style={{ transitionDelay: '0.1s' }}
         >
           <span className="h-px w-8 bg-[#d9a441]/40" />
-          <span className="font-ui text-[11px] font-medium tracking-[0.4em] uppercase text-[#d9a441]">
-            Галерея произведений
-          </span>
+          <div className="flex items-center gap-2 rounded-full border border-[#d9a441]/30 bg-[#16120e]/60 px-4 py-1 backdrop-blur-sm">
+            <Feather className="h-3.5 w-3.5 text-[#f0c169]" />
+            <span className="font-ui text-[11px] font-medium tracking-[0.4em] uppercase text-[#f0c169]">
+              Поэтический альбом • Диптих
+            </span>
+          </div>
           <span className="h-px w-8 bg-[#d9a441]/40" />
         </div>
 
         <h2
-          className={`font-display mt-5 text-4xl sm:text-5xl lg:text-6xl font-light tracking-[0.06em] text-[#f5efe6] fade-anim ${
+          className={`font-display mt-6 text-4xl sm:text-6xl lg:text-7xl font-light tracking-[0.06em] text-[#f5efe6] fade-anim ${
             shown ? 'fade-shown' : 'fade-hidden'
           }`}
-          style={{ transitionDelay: '0.25s' }}
+          style={{
+            textShadow: '0 0 40px rgba(217,164,65,0.2), 0 4px 18px rgba(0,0,0,0.9)',
+            transitionDelay: '0.25s',
+          }}
         >
-          Стихи Тамерлана
+          {currentAlbum.title}
         </h2>
 
         <p
-          className={`font-poem mt-4 max-w-2xl mx-auto text-lg sm:text-xl italic text-[#a89c8d] fade-anim ${
+          className={`font-poem mt-4 max-w-2xl mx-auto text-lg sm:text-2xl italic text-[#d6cbbe] fade-anim ${
             shown ? 'fade-shown' : 'fade-hidden'
           }`}
           style={{ transitionDelay: '0.4s' }}
         >
-          Выберите стихотворение для погружения. Каждое слово сохранено в первозданной чистоте.
+          «{currentAlbum.subtitle}»
+        </p>
+
+        <p
+          className={`font-poem mt-3 max-w-xl mx-auto text-base sm:text-lg text-[#a89c8d] fade-anim ${
+            shown ? 'fade-shown' : 'fade-hidden'
+          }`}
+          style={{ transitionDelay: '0.5s' }}
+        >
+          Два стихотворения, соединённые невидимой живой нитью. От обретения света на холсте души —
+          до противостояния осеннему мраку и поиска негасимой искры.
         </p>
 
         {/* Фильтры-таблички */}
@@ -69,7 +85,7 @@ export default function PoemCardsShowcase({ onSelectPoem }: Props) {
           className={`fade-anim mt-10 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3.5 ${
             shown ? 'fade-shown' : 'fade-hidden'
           }`}
-          style={{ transitionDelay: '0.55s' }}
+          style={{ transitionDelay: '0.6s' }}
         >
           <button
             onClick={() => setFilter('all')}
@@ -79,26 +95,26 @@ export default function PoemCardsShowcase({ onSelectPoem }: Props) {
                 : 'border border-white/5 bg-white/[0.02] text-[#a89c8d] hover:border-white/15 hover:text-[#e9dfd3]'
             }`}
           >
-            Все стихи ({allPoems.length})
+            Весь альбом (обе части)
           </button>
-          {allPoems.map((p) => (
+          {allPoems.map((p, idx) => (
             <button
               key={p.id}
               onClick={() => setFilter(p.id)}
               className={`font-ui rounded-full px-5 py-2 text-xs tracking-[0.2em] uppercase transition-all duration-300 cursor-pointer ${
                 filter === p.id
                   ? 'border border-[#d9a441] bg-[#d9a441]/15 text-[#f5efe6] shadow-[0_0_20px_rgba(217,164,65,0.25)]'
-                : 'border border-white/5 bg-white/[0.02] text-[#a89c8d] hover:border-white/15 hover:text-[#e9dfd3]'
+                  : 'border border-white/5 bg-white/[0.02] text-[#a89c8d] hover:border-white/15 hover:text-[#e9dfd3]'
               }`}
             >
-              «{p.title}»
+              Часть {idx === 0 ? 'I' : 'II'}: «{p.title}»
             </button>
           ))}
         </div>
       </div>
 
-      {/* Сетка интерактивных табличек (3D Tilt Cards) */}
-      <div className="relative mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-10">
+      {/* Сетка интерактивных табличек альбома */}
+      <div className="relative mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12">
         {filteredPoems.map((poem, index) => (
           <PoemShowcaseCard
             key={poem.id}
@@ -112,14 +128,15 @@ export default function PoemCardsShowcase({ onSelectPoem }: Props) {
         ))}
       </div>
 
-      {/* Нижняя подсказка для читателя */}
+      {/* Нижняя авторская пометка о структуре и будущем сборника */}
       <div
-        className={`fade-anim mt-16 text-center text-xs text-[#a89c8d]/60 font-ui tracking-[0.2em] uppercase ${
+        className={`fade-anim mt-16 text-center text-xs text-[#a89c8d]/60 font-ui tracking-[0.2em] uppercase max-w-lg mx-auto leading-relaxed ${
           shown ? 'fade-shown' : 'fade-hidden'
         }`}
         style={{ transitionDelay: '0.9s' }}
       >
-        Нажмите на карточку или кнопку «Читать», чтобы перейти к полному тексту со скролл-эффектами
+        Эти два стиха образуют неразрывный цикл. При скролле между ними оживает живое перо,
+        соединяя начало и продолжение пути.
       </div>
     </section>
   );
@@ -169,6 +186,7 @@ function PoemShowcaseCard({
   };
 
   const isThreads = poem.id === 'threads';
+  const partNumber = index === 0 ? 'Часть I' : 'Часть II';
 
   return (
     <div
@@ -215,14 +233,18 @@ function PoemShowcaseCard({
           className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${poem.gradient} opacity-20 transition-opacity duration-500 group-hover:opacity-35`}
         />
 
-        {/* Верхняя строка карточки: Категория и время */}
+        {/* Верхняя строка карточки: Номер части альбома и время */}
         <div className="relative z-10 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             <span
               className="inline-block h-2 w-2 rounded-full"
               style={{ backgroundColor: poem.accentColor, boxShadow: `0 0 10px ${poem.accentColor}` }}
             />
-            <span className="font-ui text-[11px] font-medium tracking-[0.25em] uppercase text-[#a89c8d]">
+            <span className="font-ui text-[11px] font-semibold tracking-[0.25em] uppercase text-[#f0c169]">
+              {partNumber}
+            </span>
+            <span className="text-white/20">•</span>
+            <span className="font-ui text-[10px] tracking-[0.2em] uppercase text-[#a89c8d]">
               {poem.category}
             </span>
           </div>
@@ -293,7 +315,7 @@ function PoemShowcaseCard({
         <div className="relative z-10 mt-8 flex items-center justify-between pt-4 border-t border-white/10">
           <div className="flex items-center gap-2 text-xs font-ui text-[#d9a441] tracking-[0.2em] uppercase">
             <Sparkles className="h-3.5 w-3.5 text-[#f0c169] animate-pulse" />
-            <span>{isThreads ? 'Открыть произведение' : 'Открыть поэму'}</span>
+            <span>{isThreads ? 'Открыть Часть II' : 'Открыть Часть I'}</span>
           </div>
 
           <div className="flex items-center gap-2 rounded-full border border-[#d9a441]/40 bg-[#d9a441]/10 px-5 py-2.5 text-xs font-medium text-[#f5efe6] transition-all duration-300 group-hover:border-[#f0c169] group-hover:bg-[#d9a441] group-hover:text-[#060504] group-hover:shadow-[0_0_20px_rgba(217,164,65,0.4)]">
