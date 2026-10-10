@@ -39,7 +39,8 @@ export default function AmbientCanvas() {
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const count = Math.min(90, Math.floor((w * h) / 16000));
+      const isMobile = w < 640;
+      const count = Math.min(isMobile ? 36 : 90, Math.floor((w * h) / 16000));
       motes = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,

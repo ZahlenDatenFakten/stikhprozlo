@@ -44,7 +44,7 @@ export default function Stanza({ chapter, index }: { chapter: Chapter; index: nu
   return (
     <section
       id={`chapter-${index}`}
-      className="relative z-10 flex min-h-[100svh] items-center justify-center px-6 py-28 sm:px-10"
+      className="relative z-10 flex min-h-[100svh] items-center justify-center px-4 sm:px-8 lg:px-10 py-20 sm:py-28 overflow-hidden"
     >
       {/* Локальное свечение главы */}
       <div
@@ -56,19 +56,19 @@ export default function Stanza({ chapter, index }: { chapter: Chapter; index: nu
       {/* Призрачная цифра главы */}
       <span
         aria-hidden="true"
-        className={`font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[52vmin] font-light leading-none ${style.numeral}`}
+        className={`font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[48vmin] sm:text-[52vmin] font-light leading-none ${style.numeral}`}
         style={{ opacity: shown ? 0.055 : 0, transition: 'opacity 2.5s cubic-bezier(0.2,0.6,0,1)' }}
       >
         {chapter.numeral}
       </span>
 
-      <div ref={ref} className="relative max-w-2xl">
+      <div ref={ref} className="relative max-w-2xl w-full">
         <div
-          className={`mb-12 flex items-center gap-5 line-anim ${shown ? 'line-shown' : 'line-hidden'}`}
+          className={`mb-8 sm:mb-12 flex items-center gap-4 sm:gap-5 line-anim ${shown ? 'line-shown' : 'line-hidden'}`}
         >
-          <span className="h-px w-10" style={{ background: style.accent, opacity: 0.6 }} />
+          <span className="h-px w-8 sm:w-10" style={{ background: style.accent, opacity: 0.6 }} />
           <span
-            className="font-ui text-[10px] font-light uppercase"
+            className="font-ui text-[10px] sm:text-[11px] font-light uppercase"
             style={{ letterSpacing: '0.45em', color: style.accent }}
           >
             {chapter.title}
@@ -79,9 +79,9 @@ export default function Stanza({ chapter, index }: { chapter: Chapter; index: nu
           {chapter.lines.map((line, i) => (
             <p
               key={i}
-              className={`font-poem text-[1.35rem] leading-[2.05] text-[#e9dfd3] sm:text-2xl sm:leading-[2] lg:text-[1.7rem] line-anim ${
+              className={`font-poem text-[1.2rem] leading-[2.0] text-[#e9dfd3] sm:text-2xl sm:leading-[2] lg:text-[1.7rem] line-anim ${
                 shown ? 'line-shown' : 'line-hidden'
-              } ${i > 0 && i % 4 === 0 ? 'mt-9' : ''}`}
+              } ${i > 0 && i % 4 === 0 ? 'mt-8 sm:mt-9' : ''}`}
               style={{
                 transitionDelay: shown ? `${0.25 + i * 0.22}s` : '0s',
                 textShadow: '0 0 24px rgba(6,5,4,0.9)',

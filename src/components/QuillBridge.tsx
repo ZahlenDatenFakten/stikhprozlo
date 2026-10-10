@@ -150,9 +150,9 @@ export default function QuillBridge({ onContinue }: Props) {
         </div>
 
         {/* Текст прямого диалога с читателем (Сайт говорит с человеком один на один) */}
-        <div className="relative mx-auto max-w-2xl px-4 text-left sm:text-center space-y-8">
+        <div className="relative mx-auto max-w-2xl px-2 sm:px-4 text-left sm:text-center space-y-6 sm:space-y-8">
           <p
-            className={`font-poem text-xl sm:text-2xl lg:text-[1.55rem] italic leading-[2.1] text-[#f5efe6] line-anim ${
+            className={`font-poem text-lg sm:text-2xl lg:text-[1.55rem] italic leading-[2.0] sm:leading-[2.1] text-[#f5efe6] line-anim ${
               shown ? 'line-shown' : 'line-hidden'
             }`}
             style={{
@@ -165,7 +165,7 @@ export default function QuillBridge({ onContinue }: Props) {
           </p>
 
           <p
-            className={`font-poem text-lg sm:text-xl lg:text-[1.35rem] leading-[2.1] text-[#d6cbbe] line-anim ${
+            className={`font-poem text-base sm:text-xl lg:text-[1.35rem] leading-[2.0] sm:leading-[2.1] text-[#d6cbbe] line-anim ${
               shown ? 'line-shown' : 'line-hidden'
             }`}
             style={{
@@ -179,7 +179,7 @@ export default function QuillBridge({ onContinue }: Props) {
           </p>
 
           <p
-            className={`font-poem text-lg sm:text-xl lg:text-[1.35rem] leading-[2.1] text-[#e09553] italic line-anim ${
+            className={`font-poem text-base sm:text-xl lg:text-[1.35rem] leading-[2.0] sm:leading-[2.1] text-[#e09553] italic line-anim ${
               shown ? 'line-shown' : 'line-hidden'
             }`}
             style={{
@@ -195,14 +195,14 @@ export default function QuillBridge({ onContinue }: Props) {
 
         {/* Символический переход к следующей главе альбома */}
         <div
-          className={`fade-anim mt-14 flex flex-col items-center gap-4 ${
+          className={`fade-anim mt-12 sm:mt-14 flex flex-col items-center gap-4 w-full px-4 ${
             shown ? 'fade-shown' : 'fade-hidden'
           }`}
           style={{ transitionDelay: '1.8s' }}
         >
           <button
             onClick={onContinue}
-            className="group relative flex items-center gap-3 overflow-hidden rounded-full border border-[#e09553]/60 bg-gradient-to-r from-[#e09553]/20 via-[#d9a441]/15 to-[#8a3324]/20 px-8 py-3.5 text-xs font-medium text-[#f5efe6] backdrop-blur-md transition-all duration-300 hover:border-[#f0c169] hover:bg-[#e09553]/30 hover:shadow-[0_0_25px_rgba(224,149,83,0.35)] cursor-pointer active:scale-95"
+            className="group relative flex w-full max-w-sm sm:w-auto items-center justify-center gap-3 overflow-hidden rounded-full border border-[#e09553]/60 bg-gradient-to-r from-[#e09553]/20 via-[#d9a441]/15 to-[#8a3324]/20 px-6 sm:px-8 py-3.5 text-xs font-medium text-[#f5efe6] backdrop-blur-md transition-all duration-300 hover:border-[#f0c169] hover:bg-[#e09553]/30 hover:shadow-[0_0_25px_rgba(224,149,83,0.35)] cursor-pointer active:scale-95"
           >
             <Sparkles className="h-4 w-4 text-[#f0c169] transition-transform group-hover:rotate-12" />
             <span className="font-ui tracking-[0.25em] uppercase">

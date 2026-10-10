@@ -164,6 +164,7 @@ function PoemShowcaseCard({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!cardRef.current) return;
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -213,7 +214,7 @@ function PoemShowcaseCard({
 
       {/* Основное тело карточки с 3D поворотом */}
       <div
-        className="relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0d0b09]/90 p-8 sm:p-10 backdrop-blur-xl transition-all duration-300 ease-out shadow-[0_20px_50px_rgba(0,0,0,0.65)] group-hover:border-[#d9a441]/40 group-hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
+        className="relative flex h-full flex-col justify-between overflow-hidden rounded-2xl border border-white/10 bg-[#0d0b09]/90 p-5 sm:p-8 lg:p-10 backdrop-blur-xl transition-all duration-300 ease-out shadow-[0_20px_50px_rgba(0,0,0,0.65)] group-hover:border-[#d9a441]/40 group-hover:shadow-[0_25px_60px_rgba(0,0,0,0.85)]"
         style={{
           transform: `rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) translateZ(10px)`,
           transformStyle: 'preserve-3d',

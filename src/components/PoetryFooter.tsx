@@ -7,7 +7,7 @@ interface Props {
 
 export default function PoetryFooter({ onScrollToTop, onNavigate }: Props) {
   return (
-    <footer className="relative z-10 border-t border-white/10 bg-[#060504]/90 px-6 py-20 text-center backdrop-blur-xl">
+    <footer className="relative z-10 border-t border-white/10 bg-[#060504]/90 px-4 sm:px-6 py-16 sm:py-20 text-center backdrop-blur-xl">
       <div className="mx-auto max-w-4xl">
         {/* Иконка пера */}
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-[#d9a441]/30 bg-[#d9a441]/10">
@@ -18,40 +18,40 @@ export default function PoetryFooter({ onScrollToTop, onNavigate }: Props) {
           Стихи Тамерлана
         </h3>
 
-        <p className="font-poem mt-4 max-w-md mx-auto text-lg italic text-[#a89c8d]">
+        <p className="font-poem mt-4 max-w-md mx-auto text-base sm:text-lg italic text-[#a89c8d]">
           «Но в самой глубокой и темной ночи останется искра, чиста и горяча...»
         </p>
 
         {/* Навигационные ссылки подвала */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-6 font-ui text-xs tracking-widest uppercase text-[#a89c8d]">
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:gap-6 font-ui text-[11px] sm:text-xs tracking-wider uppercase text-[#a89c8d]">
           <button
             onClick={() => onNavigate('hero-tamerlan')}
             className="hover:text-[#f0c169] transition-colors cursor-pointer"
           >
             Заставка
           </button>
-          <span className="text-white/20">•</span>
+          <span className="hidden sm:inline text-white/20">•</span>
           <button
             onClick={() => onNavigate('poems-showcase')}
             className="hover:text-[#f0c169] transition-colors cursor-pointer"
           >
-            Таблички стихов
+            Альбом
           </button>
-          <span className="text-white/20">•</span>
+          <span className="hidden sm:inline text-white/20">•</span>
           <button
             onClick={() => onNavigate('poem-artist')}
             className="hover:text-[#f0c169] transition-colors cursor-pointer"
           >
             «Художник»
           </button>
-          <span className="text-white/20">•</span>
+          <span className="hidden sm:inline text-white/20">•</span>
           <button
             onClick={() => onNavigate('poem-threads')}
             className="hover:text-[#f0c169] transition-colors cursor-pointer"
           >
             «Нити на ветру»
           </button>
-          <span className="text-white/20">•</span>
+          <span className="hidden sm:inline text-white/20">•</span>
           <button
             onClick={() => onNavigate('poem-threads-meaning')}
             className="hover:text-[#f0c169] transition-colors cursor-pointer"

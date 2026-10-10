@@ -109,7 +109,7 @@ export default function PoemThreads() {
 
         {/* Карточка-рукопись со смыслом стиха */}
         <div
-          className={`relative overflow-hidden rounded-3xl border border-[#d9a441]/35 bg-gradient-to-b from-[#14100c]/95 via-[#0e0c0a]/95 to-[#16120e]/95 p-8 sm:p-14 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.85),0_0_40px_rgba(217,164,65,0.08)] line-anim ${
+          className={`relative overflow-hidden rounded-3xl border border-[#d9a441]/35 bg-gradient-to-b from-[#14100c]/95 via-[#0e0c0a]/95 to-[#16120e]/95 p-5 sm:p-10 lg:p-14 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.85),0_0_40px_rgba(217,164,65,0.08)] line-anim ${
             meaningShown ? 'line-shown' : 'line-hidden'
           }`}
           style={{ transitionDelay: '0.2s' }}
@@ -213,7 +213,7 @@ function ThreadsStanzaBlock({ stanza, index }: StanzaProps) {
   return (
     <section
       id={`threads-stanza-${index}`}
-      className="relative flex min-h-[90svh] items-center justify-center px-6 py-20 sm:px-10"
+      className="relative flex min-h-[90svh] items-center justify-center px-4 sm:px-8 lg:px-10 py-16 sm:py-20 overflow-hidden"
     >
       {/* Фоновое сферическое свечение строфы */}
       <div
@@ -229,7 +229,7 @@ function ThreadsStanzaBlock({ stanza, index }: StanzaProps) {
       {/* Призрачная римская цифра на фоне */}
       <span
         aria-hidden="true"
-        className={`font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[50vmin] font-light leading-none ${mood.watermark}`}
+        className={`font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[48vmin] sm:text-[50vmin] font-light leading-none ${mood.watermark}`}
         style={{
           opacity: shown ? 0.05 : 0,
           transition: 'opacity 2.5s cubic-bezier(0.2, 0.6, 0, 1)',
@@ -241,14 +241,14 @@ function ThreadsStanzaBlock({ stanza, index }: StanzaProps) {
       <div ref={ref} className="relative z-10 max-w-2xl w-full">
         {/* Заголовок строфы */}
         <div
-          className={`mb-10 flex items-center gap-4 line-anim ${
+          className={`mb-8 sm:mb-10 flex items-center gap-3.5 sm:gap-4 line-anim ${
             shown ? 'line-shown' : 'line-hidden'
           }`}
           style={{ transitionDelay: '0.1s' }}
         >
-          <span className="h-px w-10" style={{ background: mood.accent, opacity: 0.6 }} />
+          <span className="h-px w-8 sm:w-10" style={{ background: mood.accent, opacity: 0.6 }} />
           <span
-            className="font-ui text-[11px] font-medium uppercase tracking-[0.45em]"
+            className="font-ui text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.45em]"
             style={{ color: mood.accent }}
           >
             Строфа {stanza.numeral} {stanza.subtitle && `• ${stanza.subtitle}`}
@@ -260,9 +260,9 @@ function ThreadsStanzaBlock({ stanza, index }: StanzaProps) {
           {stanza.lines.map((line, lineIdx) => (
             <p
               key={lineIdx}
-              className={`font-poem text-[1.35rem] leading-[2.1] text-[#f0e7db] sm:text-2xl sm:leading-[2.05] lg:text-[1.7rem] line-anim ${
+              className={`font-poem text-[1.2rem] leading-[2.0] text-[#f0e7db] sm:text-2xl sm:leading-[2.05] lg:text-[1.7rem] line-anim ${
                 shown ? 'line-shown' : 'line-hidden'
-              } ${lineIdx === 4 ? 'mt-8' : ''}`}
+              } ${lineIdx === 4 ? 'mt-7 sm:mt-8' : ''}`}
               style={{
                 transitionDelay: shown ? `${0.2 + lineIdx * 0.18}s` : '0s',
                 textShadow: '0 0 24px rgba(6,5,4,0.9)',
