@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { useReveal } from '@/hooks/useReveal';
 import type { Chapter } from '@/data/poem';
+import { useCalligraphySync, getPoemTrack } from '@/lib/audio';
+import CalligraphyLine from './CalligraphyLine';
 
 const moodStyles: Record<
   Chapter['mood'],
@@ -39,25 +42,53 @@ const moodStyles: Record<
 
 export default function Stanza({ chapter, index }: { chapter: Chapter; index: number }) {
   const { ref, shown } = useReveal<HTMLDivElement>(0.2);
+  const calligraphy = useCalligraphySync();
   const style = moodStyles[chapter.mood];
+
+  const track = getPoemTrack('artist');
+  const timedChapter = track.chapters[index];
+
+  const isPoemActive = calligraphy.isPlaying && calligraphy.activePoemId === 'artist';
+  const isChapterActive = isPoemActive && calligraphy.activeChapterIndex === index;
+
+  // Кинематографический автоскролл камеры за активной строкой
+  useEffect(() => {
+    if (isChapterActive && calligraphy.activeLineIndex >= 0) {
+      const lineId = `line-wrap-artist-${index}-${calligraphy.activeLineIndex}`;
+      const lineEl = document.getElementById(lineId);
+      if (lineEl) {
+        lineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, [isChapterActive, calligraphy.activeLineIndex, index]);
 
   return (
     <section
       id={`chapter-${index}`}
       className="relative z-10 flex min-h-[100svh] items-center justify-center px-4 sm:px-8 lg:px-10 py-20 sm:py-28 overflow-hidden"
     >
-      {/* Локальное свечение главы */}
+      {/* Локальное свечение главы, тонко дышащее в такт голосу */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[90vmin] w-[90vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{ background: style.glow, opacity: shown ? 1 : 0, transition: 'opacity 2s cubic-bezier(0.2,0.6,0,1)' }}
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[90vmin] w-[90vmin] rounded-full"
+        style={{
+          background: style.glow,
+          opacity: shown ? (isChapterActive ? 0.75 + calligraphy.voiceEnergy * 0.4 : 1) : 0,
+          transform: `translate(-50%, -50%) scale(${1 + (isChapterActive ? calligraphy.voiceEnergy * 0.14 : 0)})`,
+          transition: isChapterActive
+            ? 'transform 0.15s ease-out, opacity 0.2s ease-out'
+            : 'opacity 2s cubic-bezier(0.2,0.6,0,1)',
+        }}
       />
 
       {/* Призрачная цифра главы */}
       <span
         aria-hidden="true"
         className={`font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[48vmin] sm:text-[52vmin] font-light leading-none ${style.numeral}`}
-        style={{ opacity: shown ? 0.055 : 0, transition: 'opacity 2.5s cubic-bezier(0.2,0.6,0,1)' }}
+        style={{
+          opacity: shown ? (isChapterActive ? 0.08 + calligraphy.voiceEnergy * 0.05 : 0.055) : 0,
+          transition: 'opacity 1.5s cubic-bezier(0.2,0.6,0,1)',
+        }}
       >
         {chapter.numeral}
       </span>
@@ -73,23 +104,35 @@ export default function Stanza({ chapter, index }: { chapter: Chapter; index: nu
           >
             {chapter.title}
           </span>
+          {isChapterActive && (
+            <span className="flex items-center gap-1.5 text-[10px] font-ui uppercase tracking-wider text-[#f0c169] animate-pulse">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#f0c169]" />
+              Звучит голос
+            </span>
+          )}
         </div>
 
         <div className="space-y-0">
-          {chapter.lines.map((line, i) => (
-            <p
-              key={i}
-              className={`font-poem text-[1.2rem] leading-[2.0] text-[#e9dfd3] sm:text-2xl sm:leading-[2] lg:text-[1.7rem] line-anim ${
-                shown ? 'line-shown' : 'line-hidden'
-              } ${i > 0 && i % 4 === 0 ? 'mt-8 sm:mt-9' : ''}`}
-              style={{
-                transitionDelay: shown ? `${0.25 + i * 0.22}s` : '0s',
-                textShadow: '0 0 24px rgba(6,5,4,0.9)',
-              }}
-            >
-              {line}
-            </p>
-          ))}
+          {chapter.lines.map((line, i) => {
+            const timedLine = timedChapter?.lines[i];
+            return (
+              <div
+                key={i}
+                className={i > 0 && i % 4 === 0 ? 'mt-8 sm:mt-9' : ''}
+              >
+                <CalligraphyLine
+                  poemId="artist"
+                  chapterIndex={index}
+                  lineIndex={i}
+                  lineText={line}
+                  timedWords={timedLine?.words}
+                  accentColor={style.accent}
+                  isShown={shown}
+                  lineDelay={shown ? `${0.25 + i * 0.22}s` : '0s'}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

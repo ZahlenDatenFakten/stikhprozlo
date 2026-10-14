@@ -1,10 +1,16 @@
+import { useEffect } from 'react';
 import { useReveal } from '@/hooks/useReveal';
-import { threadsStanzas, threadsMeaning } from '@/data/poem';
+import { threadsStanzas, threadsMeaning, type StanzaItem } from '@/data/poem';
 import { Feather, Sparkles } from 'lucide-react';
+import { calligraphyAudio, useCalligraphySync, getPoemTrack } from '@/lib/audio';
+import CalligraphyLine from './CalligraphyLine';
 
 export default function PoemThreads() {
   const { ref: headerRef, shown: headerShown } = useReveal<HTMLDivElement>(0.2);
   const { ref: meaningRef, shown: meaningShown } = useReveal<HTMLDivElement>(0.2);
+  const calligraphy = useCalligraphySync();
+
+  const isThreadsPlaying = calligraphy.isPlaying && calligraphy.activePoemId === 'threads';
 
   return (
     <div id="poem-threads" className="relative z-10 w-full overflow-hidden py-24 sm:py-32">
@@ -57,12 +63,35 @@ export default function PoemThreads() {
           о времени, осенней тишине и негасимой искре, спрятанной глубоко в сердце
         </p>
 
+        {/* Единственная эстетичная кнопка оживления рукописи голосом автора */}
+        <div
+          className={`fade-anim mt-8 flex justify-center ${
+            headerShown ? 'fade-shown' : 'fade-hidden'
+          }`}
+          style={{ transitionDelay: '0.75s' }}
+        >
+          <button
+            onClick={() => calligraphyAudio.toggle('threads')}
+            className={`group inline-flex items-center gap-2.5 rounded-full border px-6 py-2.5 backdrop-blur-md transition-all duration-300 cursor-pointer active:scale-95 ${
+              isThreadsPlaying
+                ? 'border-[#f0c169] bg-[#d9a441]/25 text-[#f5efe6] shadow-[0_0_25px_rgba(240,193,105,0.4)]'
+                : 'border-[#e09553]/40 bg-[#14100c]/80 text-[#e9dfd3] hover:border-[#f0c169] hover:bg-[#e09553]/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)]'
+            }`}
+          >
+            <Feather className={`h-4 w-4 ${isThreadsPlaying ? 'text-[#f0c169] animate-pulse' : 'text-[#e09553]'}`} />
+            <span className="font-ui text-xs tracking-wider uppercase">
+              {isThreadsPlaying ? 'Пауза чтения' : 'Оживить рукопись голосом'}
+            </span>
+            <span className="font-ui text-[10px] text-[#e09553]/70 uppercase tracking-widest">• ~2 мин</span>
+          </button>
+        </div>
+
         {/* Анимированная золотая нить ветра */}
         <div
           className={`fade-anim mt-10 mx-auto max-w-md ${
             headerShown ? 'fade-shown' : 'fade-hidden'
           }`}
-          style={{ transitionDelay: '0.85s' }}
+          style={{ transitionDelay: '0.9s' }}
         >
           <svg viewBox="0 0 400 40" fill="none" className="w-full h-8 opacity-70">
             <path
@@ -141,36 +170,29 @@ export default function PoemThreads() {
               {threadsMeaning.title}
             </h3>
 
-            <div className="my-8 mx-auto h-px w-24 bg-gradient-to-r from-transparent via-[#d9a441]/60 to-transparent" />
+            <div className="my-5 mx-auto h-px w-20 bg-gradient-to-r from-transparent via-[#d9a441] to-transparent" />
           </div>
 
-          {/* Неискаженный точный текст смысла стиха */}
-          <div className="space-y-7 text-left">
+          {/* Абзацы осмысления автора */}
+          <div className="mt-8 space-y-6">
             {threadsMeaning.paragraphs.map((paragraph, idx) => (
               <p
                 key={idx}
-                className="font-poem text-lg sm:text-xl lg:text-[1.32rem] leading-[2.15] text-[#e8dfd4] tracking-[0.01em]"
-                style={{
-                  textShadow: '0 1px 12px rgba(6,5,4,0.8)',
-                }}
+                className="font-poem text-base sm:text-xl lg:text-[1.28rem] italic leading-[2.05] sm:leading-[2.1] text-[#d6cbbe]"
+                style={{ textShadow: '0 1px 12px rgba(6,5,4,0.8)' }}
               >
                 {paragraph}
               </p>
             ))}
           </div>
 
-          {/* Подпись автора и печать */}
-          <div className="mt-12 flex flex-col sm:flex-row items-center justify-between border-t border-white/10 pt-8 gap-4">
-            <div className="flex items-center gap-3">
-              <Sparkles className="h-4 w-4 text-[#d9a441]" />
-              <span className="font-ui text-xs tracking-[0.25em] uppercase text-[#a89c8d]">
-                Стихи Тамерлана • Авторская мысль
-              </span>
+          {/* Нижний акцент карточки смысла */}
+          <div className="mt-10 flex items-center justify-between border-t border-white/10 pt-6">
+            <div className="flex items-center gap-2 text-xs font-ui text-[#d9a441]">
+              <Sparkles className="h-4 w-4 text-[#f0c169]" />
+              <span className="tracking-[0.2em] uppercase">Откровение автора</span>
             </div>
-
-            <div className="flex items-center gap-2 rounded-full border border-[#d9a441]/30 bg-[#d9a441]/10 px-5 py-2 font-display text-lg italic text-[#f0c169]">
-              Тамерлан
-            </div>
+            <span className="font-poem text-sm italic text-[#a89c8d]">Тамерлан</span>
           </div>
         </div>
       </div>
@@ -179,14 +201,14 @@ export default function PoemThreads() {
 }
 
 interface StanzaProps {
-  stanza: (typeof threadsStanzas)[0];
+  stanza: StanzaItem;
   index: number;
 }
 
 const stanzaMoods = {
   autumn: {
     accent: '#e09553',
-    glow: 'radial-gradient(circle, rgba(224,149,83,0.15) 0%, rgba(138,51,36,0.08) 55%, transparent 75%)',
+    glow: 'radial-gradient(circle, rgba(224,149,83,0.18) 0%, rgba(138,51,36,0.12) 55%, transparent 75%)',
     watermark: 'text-[#e09553]',
   },
   corridor: {
@@ -208,21 +230,42 @@ const stanzaMoods = {
 
 function ThreadsStanzaBlock({ stanza, index }: StanzaProps) {
   const { ref, shown } = useReveal<HTMLDivElement>(0.2);
+  const calligraphy = useCalligraphySync();
   const mood = stanzaMoods[stanza.mood as keyof typeof stanzaMoods] || stanzaMoods.autumn;
+
+  const track = getPoemTrack('threads');
+  const timedStanza = track.chapters[index];
+
+  const isPoemActive = calligraphy.isPlaying && calligraphy.activePoemId === 'threads';
+  const isStanzaActive = isPoemActive && calligraphy.activeChapterIndex === index;
+
+  // Кинематографический автоскролл камеры за активной строкой
+  useEffect(() => {
+    if (isStanzaActive && calligraphy.activeLineIndex >= 0) {
+      const lineId = `line-wrap-threads-${index}-${calligraphy.activeLineIndex}`;
+      const lineEl = document.getElementById(lineId);
+      if (lineEl) {
+        lineEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+  }, [isStanzaActive, calligraphy.activeLineIndex, index]);
 
   return (
     <section
       id={`threads-stanza-${index}`}
       className="relative flex min-h-[90svh] items-center justify-center px-4 sm:px-8 lg:px-10 py-16 sm:py-20 overflow-hidden"
     >
-      {/* Фоновое сферическое свечение строфы */}
+      {/* Фоновое сферическое свечение строфы, дышащее в такт голосу */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
           background: mood.glow,
-          opacity: shown ? 1 : 0,
-          transition: 'opacity 2s cubic-bezier(0.2, 0.6, 0, 1)',
+          opacity: shown ? (isStanzaActive ? 0.75 + calligraphy.voiceEnergy * 0.4 : 1) : 0,
+          transform: `translate(-50%, -50%) scale(${1 + (isStanzaActive ? calligraphy.voiceEnergy * 0.14 : 0)})`,
+          transition: isStanzaActive
+            ? 'transform 0.15s ease-out, opacity 0.2s ease-out'
+            : 'opacity 2s cubic-bezier(0.2, 0.6, 0, 1)',
         }}
       />
 
@@ -231,8 +274,8 @@ function ThreadsStanzaBlock({ stanza, index }: StanzaProps) {
         aria-hidden="true"
         className={`font-display pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[48vmin] sm:text-[50vmin] font-light leading-none ${mood.watermark}`}
         style={{
-          opacity: shown ? 0.05 : 0,
-          transition: 'opacity 2.5s cubic-bezier(0.2, 0.6, 0, 1)',
+          opacity: shown ? (isStanzaActive ? 0.08 + calligraphy.voiceEnergy * 0.05 : 0.05) : 0,
+          transition: 'opacity 1.5s cubic-bezier(0.2, 0.6, 0, 1)',
         }}
       >
         {stanza.numeral}
@@ -253,24 +296,36 @@ function ThreadsStanzaBlock({ stanza, index }: StanzaProps) {
           >
             Строфа {stanza.numeral} {stanza.subtitle && `• ${stanza.subtitle}`}
           </span>
+          {isStanzaActive && (
+            <span className="flex items-center gap-1.5 text-[10px] font-ui uppercase tracking-wider text-[#f0c169] animate-pulse">
+              <span className="h-1.5 w-1.5 rounded-full bg-[#f0c169]" />
+              Звучит голос
+            </span>
+          )}
         </div>
 
-        {/* Текст строфы (8 строк с деликатным межстрочным интервалом и задержкой появления) */}
+        {/* Текст строфы (8 строк с пословным выводом пером) */}
         <div className="space-y-0">
-          {stanza.lines.map((line, lineIdx) => (
-            <p
-              key={lineIdx}
-              className={`font-poem text-[1.2rem] leading-[2.0] text-[#f0e7db] sm:text-2xl sm:leading-[2.05] lg:text-[1.7rem] line-anim ${
-                shown ? 'line-shown' : 'line-hidden'
-              } ${lineIdx === 4 ? 'mt-7 sm:mt-8' : ''}`}
-              style={{
-                transitionDelay: shown ? `${0.2 + lineIdx * 0.18}s` : '0s',
-                textShadow: '0 0 24px rgba(6,5,4,0.9)',
-              }}
-            >
-              {line}
-            </p>
-          ))}
+          {stanza.lines.map((line, lineIdx) => {
+            const timedLine = timedStanza?.lines[lineIdx];
+            return (
+              <div
+                key={lineIdx}
+                className={lineIdx === 4 ? 'mt-7 sm:mt-8' : ''}
+              >
+                <CalligraphyLine
+                  poemId="threads"
+                  chapterIndex={index}
+                  lineIndex={lineIdx}
+                  lineText={line}
+                  timedWords={timedLine?.words}
+                  accentColor={mood.accent}
+                  isShown={shown}
+                  lineDelay={shown ? `${0.2 + lineIdx * 0.18}s` : '0s'}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* Тонкий разделитель нити между строфами */}

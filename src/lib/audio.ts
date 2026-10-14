@@ -92,3 +92,17 @@ class AmbientAudioEngine {
 }
 
 export const ambientAudio = new AmbientAudioEngine();
+
+// Реэкспорт каллиграфического движка синхронизации голоса и рукописи
+export {
+  calligraphyAudio,
+  useCalligraphySync,
+  type CalligraphyState,
+} from './calligraphyAudio';
+export {
+  getPoemTrack,
+  type TimedWord,
+  type TimedLine,
+  type TimedChapter,
+  type PoemTimingTrack,
+} from './calligraphyTiming';

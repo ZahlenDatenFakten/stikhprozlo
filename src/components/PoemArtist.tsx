@@ -3,10 +3,13 @@ import Stanza from '@/components/Stanza';
 import BrushDivider from '@/components/BrushDivider';
 import Finale from '@/components/Finale';
 import { useReveal } from '@/hooks/useReveal';
-import { Palette } from 'lucide-react';
+import { Palette, Feather } from 'lucide-react';
+import { calligraphyAudio, useCalligraphySync } from '@/lib/audio';
 
 export default function PoemArtist() {
   const { ref: headerRef, shown: headerShown } = useReveal<HTMLDivElement>(0.2);
+  const calligraphy = useCalligraphySync();
+  const isArtistPlaying = calligraphy.isPlaying && calligraphy.activePoemId === 'artist';
 
   return (
     <div id="poem-artist" className="relative z-10 w-full overflow-hidden py-24 sm:py-32">
@@ -69,6 +72,29 @@ export default function PoemArtist() {
           о душе — холсте, о тьме и свете,
           <br />и о том, кто держит кисть
         </p>
+
+        {/* Эстетичная кнопка оживления рукописи голосом автора */}
+        <div
+          className={`fade-anim mt-8 flex justify-center ${
+            headerShown ? 'fade-shown' : 'fade-hidden'
+          }`}
+          style={{ transitionDelay: '0.9s' }}
+        >
+          <button
+            onClick={() => calligraphyAudio.toggle('artist')}
+            className={`group inline-flex items-center gap-2.5 rounded-full border px-6 py-2.5 backdrop-blur-md transition-all duration-300 cursor-pointer active:scale-95 ${
+              isArtistPlaying
+                ? 'border-[#f0c169] bg-[#d9a441]/25 text-[#f5efe6] shadow-[0_0_25px_rgba(240,193,105,0.4)]'
+                : 'border-[#d9a441]/40 bg-[#14100c]/80 text-[#e9dfd3] hover:border-[#f0c169] hover:bg-[#d9a441]/20 shadow-[0_4px_20px_rgba(0,0,0,0.5)]'
+            }`}
+          >
+            <Feather className={`h-4 w-4 ${isArtistPlaying ? 'text-[#f0c169] animate-pulse' : 'text-[#d9a441]'}`} />
+            <span className="font-ui text-xs tracking-wider uppercase">
+              {isArtistPlaying ? 'Пауза чтения' : 'Оживить рукопись голосом'}
+            </span>
+            <span className="font-ui text-[10px] text-[#d9a441]/70 uppercase tracking-widest">• ~3 мин</span>
+          </button>
+        </div>
       </header>
 
       {/* Главы поэмы с сохранением авторской логики */}

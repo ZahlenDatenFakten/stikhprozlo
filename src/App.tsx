@@ -1,5 +1,6 @@
 import AmbientCanvas from '@/components/AmbientCanvas';
 import AmbientGlow from '@/components/AmbientGlow';
+import CalligraphicQuill from '@/components/CalligraphicQuill';
 import FloatingNavbar from '@/components/FloatingNavbar';
 import TamerlanHero from '@/components/TamerlanHero';
 import PoemCardsShowcase from '@/components/PoemCardsShowcase';
@@ -36,6 +37,9 @@ export default function App() {
       {/* Атмосферные световые слои и пылинки */}
       <AmbientGlow />
       <AmbientCanvas />
+
+      {/* Живое каллиграфическое перо и искры чернил */}
+      <CalligraphicQuill />
 
       {/* Парящая верхняя навигация */}
       <FloatingNavbar journey={journey} onNavigate={scrollTo} />

@@ -58,6 +58,31 @@
   .font-ui {
     font-family: 'Manrope', system-ui, sans-serif;
   }
+  .font-handwriting {
+    font-family: 'Marck Script', 'Cormorant Garamond', Georgia, cursive;
+  }
+
+  /* Стилизация живых чернил и каллиграфии */
+  .ink-char-reveal {
+    display: inline-block;
+    transition: color 1.2s cubic-bezier(0.2, 0.6, 0, 1), text-shadow 1.2s cubic-bezier(0.2, 0.6, 0, 1);
+  }
+
+  .ink-wet {
+    color: #f0c169;
+    text-shadow: 0 0 14px rgba(240, 193, 105, 0.75), 0 0 28px rgba(217, 164, 65, 0.45);
+    filter: drop-shadow(0 0 6px rgba(240, 193, 105, 0.6));
+  }
+
+  .ink-drying {
+    color: #f5efe6;
+    text-shadow: 0 0 16px rgba(240, 193, 105, 0.35);
+  }
+
+  .ink-dry {
+    color: #e9dfd3;
+    text-shadow: 0 0 24px rgba(6, 5, 4, 0.9);
+  }
 
   /* Построчное появление */
   .line-hidden {

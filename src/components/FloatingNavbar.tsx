@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Volume2, VolumeX, Feather, Menu, X, QrCode, Sparkles } from 'lucide-react';
-import { ambientAudio } from '@/lib/audio';
+import { ambientAudio, calligraphyAudio, useCalligraphySync } from '@/lib/audio';
 import MobileConnectModal from './MobileConnectModal';
 
 interface Props {
@@ -18,6 +18,7 @@ const navSections = [
 ];
 
 export default function FloatingNavbar({ journey, onNavigate }: Props) {
+  const calligraphy = useCalligraphySync();
   const [audioActive, setAudioActive] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('hero-tamerlan');
@@ -55,6 +56,18 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
   const handleAudioToggle = () => {
     const next = ambientAudio.toggle();
     setAudioActive(next);
+  };
+
+  const handleRecitationToggle = () => {
+    if (calligraphy.isPlaying) {
+      calligraphyAudio.pause();
+    } else {
+      const targetPoem = activeSection.startsWith('poem-threads') ? 'threads' : 'artist';
+      calligraphyAudio.play(targetPoem);
+      if (activeSection === 'hero-tamerlan' || activeSection === 'poems-showcase') {
+        onNavigate('poem-artist');
+      }
+    }
   };
 
   const handleMobileNav = (id: string) => {
@@ -166,8 +179,25 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
             </button>
           </div>
 
-          {/* Правая часть: кнопка телефона (QR) и эмбиент-звука */}
+          {/* Правая часть: кнопка оживления голоса, QR и эмбиент-звука */}
           <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Кнопка оживления рукописи голосом */}
+            <button
+              onClick={handleRecitationToggle}
+              title={calligraphy.isPlaying ? 'Приостановить чтение' : 'Оживить рукопись голосом автора'}
+              aria-label="Оживить рукопись голосом"
+              className={`flex items-center gap-1.5 rounded-full border px-2.5 sm:px-3.5 py-1 sm:py-1.5 font-ui text-[11px] transition-all duration-300 cursor-pointer ${
+                calligraphy.isPlaying
+                  ? 'border-[#f0c169] bg-[#d9a441]/25 text-[#f5efe6] shadow-[0_0_15px_rgba(240,193,105,0.4)]'
+                  : 'border-[#d9a441]/40 bg-[#d9a441]/10 text-[#f0c169] hover:border-[#f0c169] hover:bg-[#d9a441]/20'
+              }`}
+            >
+              <Feather className={`h-3.5 w-3.5 ${calligraphy.isPlaying ? 'text-[#f0c169] animate-pulse' : 'text-[#d9a441]'}`} />
+              <span className="hidden sm:inline font-medium">
+                {calligraphy.isPlaying ? 'Пауза' : 'Оживить голос'}
+              </span>
+            </button>
+
             {/* Кнопка открытия на телефоне (QR) */}
             <button
               onClick={() => setQrOpen(true)}
@@ -257,11 +287,31 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
               })}
             </div>
 
+            {/* Кнопка оживления голоса в мобильной шторке */}
+            <div className="mt-5 pt-4 border-t border-white/10">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleRecitationToggle();
+                }}
+                className={`w-full flex items-center justify-center gap-2.5 rounded-full border py-3 font-ui text-xs uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                  calligraphy.isPlaying
+                    ? 'border-[#f0c169] bg-[#d9a441]/25 text-[#f5efe6] shadow-[0_0_20px_rgba(240,193,105,0.3)]'
+                    : 'border-[#d9a441]/40 bg-[#d9a441]/15 text-[#f0c169] hover:bg-[#d9a441]/25'
+                }`}
+              >
+                <Feather className={`h-4 w-4 ${calligraphy.isPlaying ? 'text-[#f0c169] animate-pulse' : 'text-[#d9a441]'}`} />
+                <span className="font-medium">
+                  {calligraphy.isPlaying ? 'Приостановить чтение' : 'Оживить рукопись голосом'}
+                </span>
+              </button>
+            </div>
+
             {/* Нижние кнопки в меню */}
-            <div className="mt-6 flex items-center gap-3 pt-4 border-t border-white/10">
+            <div className="mt-3 flex items-center gap-3">
               <button
                 onClick={handleAudioToggle}
-                className="flex-1 flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 py-3 font-ui text-xs uppercase tracking-wider text-[#f5efe6]"
+                className="flex-1 flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 py-2.5 font-ui text-xs uppercase tracking-wider text-[#f5efe6]"
               >
                 {audioActive ? <Volume2 className="h-4 w-4 text-[#f0c169]" /> : <VolumeX className="h-4 w-4" />}
                 <span>{audioActive ? 'Звук: Вкл' : 'Звук: Выкл'}</span>
@@ -272,7 +322,7 @@ export default function FloatingNavbar({ journey, onNavigate }: Props) {
                   setMobileMenuOpen(false);
                   setQrOpen(true);
                 }}
-                className="flex-1 flex items-center justify-center gap-2 rounded-full border border-[#d9a441]/40 bg-[#d9a441]/15 py-3 font-ui text-xs uppercase tracking-wider text-[#f0c169]"
+                className="flex-1 flex items-center justify-center gap-2 rounded-full border border-[#d9a441]/40 bg-[#d9a441]/15 py-2.5 font-ui text-xs uppercase tracking-wider text-[#f0c169]"
               >
                 <QrCode className="h-4 w-4" />
                 <span>QR-код</span>
