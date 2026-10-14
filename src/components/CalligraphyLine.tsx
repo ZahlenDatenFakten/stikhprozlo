@@ -17,7 +17,6 @@ export default function CalligraphyLine({
   lineIndex,
   lineText,
   timedWords = [],
-  accentColor = '#f0c169',
   isShown,
   lineDelay,
 }: Props) {
@@ -48,7 +47,6 @@ export default function CalligraphyLine({
   const currentWordIdx = calligraphy.activeWordIndex;
   const wordProgress = calligraphy.wordProgress;
   const currentTime = calligraphy.currentTime;
-  const voiceEnergy = calligraphy.voiceEnergy;
 
   const isChapterPassed = currentChapterIdx > chapterIndex;
   const isChapterFuture = currentChapterIdx < chapterIndex;
@@ -115,8 +113,14 @@ export default function CalligraphyLine({
           );
         }
 
-        // status === 'active' — Слово сейчас пишется пером
-        const clipPercent = Math.max(0, Math.min(100, (1 - wordProgress) * 100));
+        // status === 'active' — Слово сейчас плавно пишется пером
+        // Используем мягкую градиентную маску без жестких прямоугольных рамок (в отличие от clip-path)
+        const progressPercent = Math.max(0, Math.min(100, wordProgress * 100));
+        const feather = 6; // мягкий растушеванный переход пера
+        const fadeStart = Math.max(0, progressPercent - 2);
+        const fadeEnd = Math.min(100, progressPercent + feather);
+
+        const softMask = `linear-gradient(to right, rgba(0,0,0,1) 0%, rgba(0,0,0,1) ${fadeStart}%, rgba(0,0,0,0) ${fadeEnd}%, rgba(0,0,0,0) 100%)`;
 
         return (
           <span
@@ -124,15 +128,16 @@ export default function CalligraphyLine({
             id={word.id}
             className="relative inline-block font-handwriting"
           >
-            {/* Фантомная подложка для сохранения ширины слова */}
+            {/* Фантомная подложка для сохранения точной ширины слова */}
             <span className="opacity-0 select-none">{word.text}&nbsp;</span>
 
-            {/* Прорисовывающееся слово из-под кончика пера */}
+            {/* Прорисовывающееся слово с мягким золотистым свечением без резких границ */}
             <span
-              className="absolute left-0 top-0 whitespace-nowrap text-[#f0c169] drop-shadow-[0_0_8px_rgba(240,193,105,0.7)]"
+              className="absolute left-0 top-0 whitespace-nowrap text-[#f0c169]"
               style={{
-                clipPath: `inset(0 ${clipPercent}% 0 0)`,
-                textShadow: `0 0 ${12 + voiceEnergy * 16}px ${accentColor}, 0 0 ${24 + voiceEnergy * 24}px rgba(217,164,65,0.5)`,
+                WebkitMaskImage: softMask,
+                maskImage: softMask,
+                textShadow: '0 0 6px rgba(240, 193, 105, 0.65), 0 0 14px rgba(217, 164, 65, 0.25)',
               }}
             >
               {word.text}&nbsp;

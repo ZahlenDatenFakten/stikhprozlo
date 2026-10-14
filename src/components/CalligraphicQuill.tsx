@@ -96,16 +96,16 @@ export default function CalligraphicQuill() {
         if (ctx) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-          // Генерация новых искр при нажиме пера
-          if (isWritingRef.current && (energy > 0.25 || Math.random() < 0.35)) {
-            if (particles.current.length < 24) {
+          // Генерация новых искр при нажиме пера (деликатные золотые пылинки)
+          if (isWritingRef.current && (energy > 0.3 || Math.random() < 0.2)) {
+            if (particles.current.length < 16) {
               particles.current.push({
                 x: cur.x,
                 y: cur.y,
-                vx: (Math.random() - 0.5) * 1.8 - 0.6,
-                vy: (Math.random() - 0.6) * 1.6,
-                alpha: 0.8 + Math.random() * 0.2,
-                size: 1.2 + Math.random() * 2.0,
+                vx: (Math.random() - 0.5) * 1.4 - 0.4,
+                vy: (Math.random() - 0.6) * 1.2,
+                alpha: 0.45 + Math.random() * 0.25,
+                size: 0.8 + Math.random() * 1.2,
               });
             }
           }
@@ -115,17 +115,17 @@ export default function CalligraphicQuill() {
             const p = particles.current[i];
             p.x += p.vx;
             p.y += p.vy;
-            p.alpha -= 0.024;
-            p.size *= 0.96;
+            p.alpha -= 0.02;
+            p.size *= 0.97;
 
-            if (p.alpha <= 0 || p.size <= 0.4) {
+            if (p.alpha <= 0 || p.size <= 0.3) {
               particles.current.splice(i, 1);
               continue;
             }
 
             ctx.fillStyle = `rgba(240, 193, 105, ${p.alpha})`;
-            ctx.shadowColor = '#d9a441';
-            ctx.shadowBlur = 6;
+            ctx.shadowColor = 'rgba(217, 164, 65, 0.4)';
+            ctx.shadowBlur = 4;
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.fill();
@@ -175,12 +175,14 @@ export default function CalligraphicQuill() {
           willChange: 'transform',
         }}
       >
-        {/* Свечение на кончике пера в точке касания (0, 0) */}
+        {/* Мягкий бесшовный ореол света на кончике пера без резких границ */}
         <div
-          className="absolute -left-3 -top-3 h-6 w-6 rounded-full bg-[#f0c169]/80 blur-[6px] transition-transform duration-100"
+          className="pointer-events-none absolute -left-6 -top-6 h-12 w-12 rounded-full transition-transform duration-150 ease-out"
           style={{
-            transform: `scale(${1 + voiceEnergyRef.current * 0.8})`,
-            boxShadow: '0 0 16px rgba(240,193,105,0.9), 0 0 30px rgba(217,164,65,0.6)',
+            background:
+              'radial-gradient(circle, rgba(240,193,105,0.4) 0%, rgba(217,164,65,0.15) 35%, rgba(217,164,65,0) 70%)',
+            transform: `scale(${0.9 + voiceEnergyRef.current * 0.4})`,
+            filter: 'blur(3px)',
           }}
         />
 
